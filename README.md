@@ -1,16 +1,26 @@
 ## Banner Extension
 1.  On the GTVSQPR page, create a Process Rule Code.
+
     Created extensions -  PPI_EXTENSIONS, PPI_IMAGE, ANK_IMAGE_EXTEND
+
 2. On the GTVSQRU page, create a Rule Code.
+
 Created rules code - PPI_Read_Code, PPI_Read, PPI_UPDATE, PPI_WRITE
 
 3. On the GTVSQPA page, create a GUID_LIST parameter of the CHARACTER type.
+
 Already present
+
 4. On the GORSQPA page, associate the GUID_LIST parameter code with process code.
+
 Associated PPI_Extension to GUID_LIST
+
 5. Include as many columns as required but ensure that one of the columns is referenced with the GUID name.
+
 Done
+
 6. SQL Query in GORRSQL page
+
 Associated PPI_Extension to PPI_Read
 Read query Read.sql validated
 
