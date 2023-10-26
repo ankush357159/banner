@@ -1,0 +1,9 @@
+26-10-2023
+select * from GTVSQPR where gtvsqpr_code like 'APP%'; --APP_EXTENSIONS
+select * from GTVSQRU where gtvsqru_code like 'APP%'; --APP_IMAGE_READ
+select * from GTVSQPA where gtvsqpa_code like 'GUID%'; --GUID_LIST, GUID
+select * from GORRSQL where GORRSQL_SQPR_CODE like 'APP%'; --APP_EXTENSIONS -> APP_IMAGE_READ
+--extension-codes: "id": 122
+--extension-definitions: "id": 163
+--extension-versions: "id": 195
+
