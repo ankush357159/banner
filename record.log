@@ -7,3 +7,20 @@ select * from GORRSQL where GORRSQL_SQPR_CODE like 'APP%'; --APP_EXTENSIONS -> A
 --extension-definitions: "id": 163
 --extension-versions: "id": 195
 
+27-10-2023
+select * from GTVSQPR where gtvsqpr_code like 'APP%'; --APP_EXTENSIONS
+select * from GTVSQRU where gtvsqru_code like 'APP%'; --APP_PPI_RULE_READ, APP_PPI_RULE_UPDATE
+select * from GTVSQPA where gtvsqpa_code like 'GUID%'; --GUID_LIST, GUID
+select * from GORRSQL where GORRSQL_SQPR_CODE like 'APP%'; --APP_EXTENSIONS -> APP_PPI_RULE_READ, APP_PPI_RULE_UPDATE
+--extension-codes:    "id": 142
+--extension-definitions: "id": 182, "id": 185,
+--extension-versions: "id": 195, "id": 129,
+
+28-10-2023
+select * from GTVSQPR where gtvsqpr_code like 'APP%'; --APP_EXTENSIONS
+select * from GTVSQRU where gtvsqru_code like 'APP%'; --
+select * from GTVSQPA where gtvsqpa_code like 'GUID%'; --GUID_LIST, GUID
+select * from GORRSQL where GORRSQL_SQPR_CODE like 'APP%'; --APP_EXTENSIONS -> 
+--extension-codes:    "id": 
+--extension-definitions: "id": 
+--extension-versions: "id": 

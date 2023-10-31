@@ -1,29 +1,21 @@
--- GUID, IMAGE, LAST_NAME, FIRST_NAME
-select gorguid_guid as guid,
-ppi_image IMAGE,spriden.SPRIDEN_LAST_NAME AS Last_Name,
-    spriden.SPRIDEN_FIRST_NAME AS First_Name  from
-gorguid,ppi,spriden
-where gorguid_ldm_name='persons' and
-gorguid_domain_surrogate_id = spriden_surrogate_id
-and spriden_pidm = ppi_pidm
-and gorguid_guid in (:GUID_LIST)
+SELECT GORGUID_GUID AS GUID,
+PPI_IMAGE FROM
+GORGUID, PPI, SPRIDEN
+WHERE GORGUID_LDM_NAME='PERSONS' AND
+GORGUID_DOMAIN_SURROGATE_ID = SPRIDEN_SURROGATE_ID
+AND SPRIDEN_PIDM = PPI_PIDM
+AND GORGUID_GUID IN (:GUID_LIST);
 
+-----------------------------------------------------------------
+----------INSERT INTO PPI (ppi_id, ppi_image, ppi_pidm)----------
+----------VALUES (1, EMPTY_BLOB(), 36841);-----------------------
+----------gorguid_guid='1bb55ed3-3772-40a9-be4a-836e871a4416'----
+----------gorguid_domain_surrogate_id='378'----------------------
+-----------------------------------------------------------------
 
--- GUID AND IMAGE_NAME AS IMAGE
-SELECT gorguid_guid AS guid,
-       img_name AS IMAGE
-FROM gorguid, ppi, spriden
-WHERE gorguid_ldm_name = 'persons'
-  AND gorguid_domain_surrogate_id = spriden_surrogate_id
-  AND spriden_pidm = ppi_pidm
-  AND gorguid_guid IN (:GUID_LIST);
-  
-
--- GUID and LEGACY_CODE
-SELECT gorguid_guid AS guid,
-       SPBPERS_LGCY_CODE AS LEGACY_CODE
-FROM gorguid, SPBPERS, spriden
-WHERE gorguid_ldm_name = 'persons'
-AND gorguid_domain_surrogate_id = spriden_surrogate_id
-AND spriden_pidm = spbpers_pidm
-AND gorguid_guid IN (:GUID_LIST);
+SELECT GORGUID_GUID AS GUID, IMG_NAME
+FROM GORGUID, PPI, SPRIDEN
+WHERE GORGUID_LDM_NAME = LOWER('PERSONS')
+AND GORGUID_DOMAIN_SURROGATE_ID = SPRIDEN_SURROGATE_ID
+AND SPRIDEN_PIDM = PPI_PIDM
+AND GORGUID_GUID IN (:GUID_LIST)
