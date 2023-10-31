@@ -75,6 +75,8 @@ gorguid_domain_surrogate_id = spriden_surrogate_id
 and spriden_pidm = ppi_pidm
 and gorguid_guid in (:GUID_LIST);
 
+select * from spriden where spriden_pidm='180';
+
 select * from GTVSQPR where gtvsqpr_code like 'APP%'; --APP_EXTENSIONS
 select * from GTVSQRU where gtvsqru_code like 'APP%'; --APP_PPI_RULE_READ, APP_PPI_RULE_UPDATE
 select * from GTVSQPA where gtvsqpa_code like 'GUID%'; --GUID_LIST, GUID
@@ -151,13 +153,7 @@ GORGUID_DOMAIN_SURROGATE_ID = SPRIDEN_SURROGATE_ID
 AND SPRIDEN_PIDM = IPP_PIDM
 AND GORGUID_GUID IN (:GUID_LIST);
 
-SELECT GORGUID_GUID AS GUID,
-IPP_IMAGE FROM
-GORGUID, IPP, SPRIDEN
-WHERE GORGUID_LDM_NAME=LOWER('PERSONS') AND
-GORGUID_DOMAIN_SURROGATE_ID = SPRIDEN_SURROGATE_ID
-AND SPRIDEN_PIDM = IPP_PIDM
-AND GORGUID_GUID IN (:GUID_LIST);
+
 
 SELECT GORGUID_GUID AS GUID, IMG_NAME
 FROM GORGUID, PPI, SPRIDEN
@@ -182,7 +178,7 @@ select * from ppi where ppi_id=2;
 ALTER TABLE PPI MODIFY IMG_NAME VARCHAR2(4000);
 describe ppi;
 SELECT * FROM gurapvr;
-select * from spriden where SPRIDEN_SURROGATE_ID = '1';
+select SPRIDEN_SURROGATE_ID from spriden where SPRIDEN_SURROGATE_ID = '1';
 
 
 
@@ -222,21 +218,32 @@ BEGIN
     END IF;
 END;
 
+select * from gtvapec;
+select * from gurapvr;
+select * from gurapex;
 
 
 
-select * from ppi
+select * from ppi where s
+select * from spriden where spriden_pidm='180';
 UPDATE ppi
 SET img_name = :img
 WHERE ppi_pidm = '36503';
 INSERT into ppi (ppi_id, ppi_pidm, img_name) values (9, 37178, 'I am nube');
 select * from spriden where SPRIDEN_pidm = '37130';
-select * from gorguid where GORGUID_DOMAIN_SURROGATE_ID = '2' and gorguid_ldm_name='persons';
+select * from gorguid where GORGUID_DOMAIN_SURROGATE_ID = '43561' and gorguid_ldm_name='persons';
 select * from gorguid where gorguid_guid = '49e72211-3c8a-4ef8-836c-425e2308c675';
-select * from spriden where spriden_surrogate_id='6567';
-select * from spriden where spriden_surrogate_id='5';
-select * from gorguid where gorguid_guid = '961bbf64-31bc-4d06-85c7-a06c3a67984b';
+select * from spriden where spriden_surrogate_id='4';
+select * from spriden where spriden_surrogate_id='';
+select * from gorguid where gorguid_guid = '961bbf64-31bc-4d06-85c7-a06c3a67984b'; --this one
 select * from gorguid where gorguid_guid = '49e72211-3c8a-4ef8-836c-425e2308c675';
 select * from gorguid where gorguid_guid = '7be4ec28-846b-42d1-931c-4e1c0e44d60d';
+select * from spriden where spriden_pidm='180';
+select * from ppi;
 
-
+SELECT GORGUID_GUID AS GUID, IMG_NAME
+FROM GORGUID, PPI, SPRIDEN
+WHERE GORGUID_LDM_NAME = LOWER('PERSONS')
+AND GORGUID_DOMAIN_SURROGATE_ID = SPRIDEN_SURROGATE_ID
+AND SPRIDEN_PIDM = PPI_PIDM
+AND GORGUID_GUID IN (:GUID_LIST)
