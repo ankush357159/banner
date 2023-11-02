@@ -12,6 +12,7 @@ select * from ppi;
 INSERT into ppi (ppi_id, ppi_pidm, img_name) values (2, 36842, 'hi.gif');
 select SPRIDEN_PIDM, SPRIDEN_FIRST_NAME from spriden;
 delete from ppi where ppi_pidm='36842';
+select * from spriden where spriden_pidm = '37131';
 
 --Create new image
 Set serveroutput on 
@@ -102,15 +103,9 @@ select * from GORRSQL where GORRSQL_SQPR_CODE like 'APP%'; --APP_EXTENSIONS -> I
 --        "knownMediaType": "application/vnd.hedtech.integration.v12.3.0+json"
 --}
 
-SELECT GORGUID_GUID AS GUID,
-IPP_IMAGE FROM
-GORGUID, IPP, SPRIDEN
-WHERE GORGUID_LDM_NAME='PERSONS' AND
-GORGUID_DOMAIN_SURROGATE_ID = SPRIDEN_SURROGATE_ID
-AND SPRIDEN_PIDM = IPP_PIDM
-AND GORGUID_GUID IN (:GUID_LIST)
+S
 
-select * from gorguid where GORGUID_GUID='1bb55ed3-3772-40a9-be4a-836e871a4416'
+select * from gorguid where GORGUID_GUID='1bb55ed3-3772-40a9-be4a-836e871a4416';
 describe gorguid;
 describe GORSQPA
 --Example code for UPDATE operation
@@ -135,23 +130,10 @@ INSERT into ipp (ipp_id, ipp_image, ipp_pidm, ipp_type) values (1, :ipp_image, :
 select * from ipp;
 select * from ppi;
 
-select gorguid_guid as guid,
-ipp_image from
-gorguid, ipp, spriden
-where gorguid_ldm_name='persons' and
-gorguid_domain_surrogate_id = spriden_surrogate_id
-and spriden_pidm = ipp_pidm
-and gorguid_guid in (:GUID_LIST)
 
 
 
-SELECT GORGUID_GUID AS GUID,
-IPP_IMAGE FROM
-GORGUID, IPP, SPRIDEN
-WHERE GORGUID_LDM_NAME=LOWER('PERSONS') AND
-GORGUID_DOMAIN_SURROGATE_ID = SPRIDEN_SURROGATE_ID
-AND SPRIDEN_PIDM = IPP_PIDM
-AND GORGUID_GUID IN (:GUID_LIST);
+
 
 
 
@@ -246,4 +228,61 @@ FROM GORGUID, PPI, SPRIDEN
 WHERE GORGUID_LDM_NAME = LOWER('PERSONS')
 AND GORGUID_DOMAIN_SURROGATE_ID = SPRIDEN_SURROGATE_ID
 AND SPRIDEN_PIDM = PPI_PIDM
-AND GORGUID_GUID IN (:GUID_LIST)
+AND GORGUID_GUID IN (:GUID_LIST);
+
+
+--Update procedure for UPDATE_IMAGE_NAME
+DECLARE
+    PROCEDURE UPDATE_IMAGE_NAME (
+        P_GUID GORGUID.GORGUID_GUID%TYPE,
+        P_IMG_NAME PPI.IMG_NAME%TYPE
+    ) IS
+    BEGIN
+        IF P_GUID IS NOT NULL THEN
+            UPDATE PPI
+            SET IMG_NAME = P_IMG_NAME
+            WHERE PPI_PIDM IN (
+                SELECT SPRIDEN_PIDM
+                FROM SPRIDEN
+                WHERE SPRIDEN_SURROGATE_ID = (
+                    SELECT GORGUID_DOMAIN_SURROGATE_ID
+                    FROM GORGUID
+                    WHERE GORGUID_GUID = P_GUID
+                    AND GORGUID_LDM_NAME = LOWER('PERSONS')
+                )
+            );
+            COMMIT;
+        END IF;
+    END UPDATE_IMAGE_NAME;
+
+BEGIN
+    IF :HTTP_METHOD = ( 'PUT' ) AND :GUID IS NOT NULL THEN
+        UPDATE_IMAGE_NAME(:GUID , :IMG_NAME);
+    END IF;
+END;
+
+
+--Update procedure for LIC_ISSUE_DATE
+DECLARE
+    lv_pidm spriden.spriden_pidm%TYPE;
+    
+    PROCEDURE proc_lic_iss_date(
+        p_pidm spriden.spriden%TYPE,
+        p_lic_issue_date spbpers.spbpers_license_issued_date%TYPE       
+    ) IS
+    
+BEGIN
+    IF :HTTP_METHOD IN ( 'PUT' ) THEN
+        IF ( to_char(:LIC_ISSUE_DATE) != dml_common.unspecified_string ) THEN
+            SELECT
+                to_char(gorguid_domain_key)
+            INTO lv_pidm
+            FROM 
+                gorguid
+            WHERE
+                gorguid_guid IN ( :GUID );
+            
+            proc_lic_iss_date(lv_pidm, to_date(:LIC_ISSUE_DATE, 'YYYY-MM-DD'));
+        END IF;
+    END IF;
+END;
